@@ -4,7 +4,7 @@ USE QLSV_DoAn;
 GO
 
 /* ============================================
-   1) BẢNG TRUNG TÂM: SINHVIEN
+   1) BANG TRUNG TAM: SINHVIEN
    ============================================ */
 CREATE TABLE dbo.SinhVien (
     MaSV      VARCHAR(10)    NOT NULL,
@@ -13,17 +13,17 @@ CREATE TABLE dbo.SinhVien (
     Nganh     NVARCHAR(50)   NULL,
     Khoa      NVARCHAR(50)   NULL,
     NgaySinh  DATE           NULL,
-    GioiTinh  NVARCHAR(5)    NULL,  -- Nam/Nữ
+    GioiTinh  NVARCHAR(5)    NULL,  -- Nam/Nu
     DiaChi    NVARCHAR(200)  NULL,
     SDT       VARCHAR(15)    NULL,
     CONSTRAINT PK_SinhVien PRIMARY KEY (MaSV),
-    CONSTRAINT CK_SV_GioiTinh CHECK (GioiTinh IN (N'Nam', N'Nữ')),
+    CONSTRAINT CK_SV_GioiTinh CHECK (GioiTinh IN (N'Nam', N'Nu')),
     CONSTRAINT CK_SV_SDT CHECK (SDT IS NULL OR SDT LIKE '[0-9+ -]%')
 );
 GO
 
 /* ============================================
-   2) HOẠT ĐỘNG ĐOÀN
+   2) HOAT DONG DOAN
    ============================================ */
 CREATE TABLE dbo.HoatDongDoan (
     MaHD       VARCHAR(10)     NOT NULL,
@@ -36,38 +36,38 @@ CREATE TABLE dbo.HoatDongDoan (
 GO
 
 /* ============================================
-   3) ĐOÀN VIÊN (PK = MaSV; đồng thời FK → SinhVien)
+   3) DOAN VIEN (PK = MaSV; dong thoi FK → SinhVien)
    ============================================ */
 CREATE TABLE dbo.DoanVien (
-    MaSV        VARCHAR(10)    NOT NULL,  -- PK + FK tới SinhVien
+    MaSV        VARCHAR(10)    NOT NULL,  -- PK + FK toi SinhVien
     NgayVaoDoan DATE           NULL,
-    ChucVu      NVARCHAR(50)   NULL,  -- Bí thư/Phó bí thư/Ủy viên
-    TrangThai   NVARCHAR(20)   NULL,  -- Đang sinh hoạt/Tạm ngưng/...
-    DoanPhi     NVARCHAR(20)   NULL,  -- Đã đóng/Chưa đóng/Nợ phí/...
-    NgayDong    DATE           NULL,  -- Ngày đóng đoàn phí
+    ChucVu      NVARCHAR(50)   NULL,  -- Bi thu/Pho bi thu/Uy vien/Doan vien
+    TrangThai   NVARCHAR(20)   NULL,  -- Dang sinh hoat/Tam ngung
+    DoanPhi     NVARCHAR(20)   NULL,  -- Da dong/Chua dong/No phi
+    NgayDong    DATE           NULL,  -- Ngay dong doan phi
     CONSTRAINT PK_DoanVien PRIMARY KEY (MaSV),
     CONSTRAINT FK_DoanVien_SV
         FOREIGN KEY (MaSV) REFERENCES dbo.SinhVien(MaSV)
         ON DELETE CASCADE,
     CONSTRAINT CK_DV_ChucVu
-        CHECK (ChucVu IS NULL OR ChucVu IN (N'Bí thư', N'Phó bí thư', N'Ủy viên', N'Đoàn viên')),
+        CHECK (ChucVu IS NULL OR ChucVu IN (N'Bi thu', N'Pho bi thu', N'Uy vien', N'Doan vien')),
     CONSTRAINT CK_DV_TrangThai
-        CHECK (TrangThai IS NULL OR TrangThai IN (N'Đang sinh hoạt', N'Tạm ngưng')),
+        CHECK (TrangThai IS NULL OR TrangThai IN (N'Dang sinh hoat', N'Tam ngung')),
     CONSTRAINT CK_DV_DoAnPhi
-        CHECK (DoanPhi IS NULL OR DoanPhi IN (N'Đã đóng', N'Chưa đóng', N'Nợ phí')),
+        CHECK (DoanPhi IS NULL OR DoanPhi IN (N'Da dong', N'Chua dong', N'No phi')),
     CONSTRAINT CK_DV_NgayDong_Logic
-        CHECK (NgayDong IS NULL OR DoanPhi = N'Đã đóng')
+        CHECK (NgayDong IS NULL OR DoanPhi = N'Da dong')
 );
 GO
 
 /* ============================================
-   4) THAM GIA HOẠT ĐỘNG
+   4) THAM GIA HOAT DONG
    ============================================ */
 CREATE TABLE dbo.ThamGiaHD (
     MaSV    VARCHAR(10)    NOT NULL,   -- FK → SinhVien
     MaHD    VARCHAR(10)    NOT NULL,   -- FK → HoatDongDoan
-    VaiTro  NVARCHAR(50)   NULL,       -- Thành viên/BTC/Diễn giả...
-    KetQua  NVARCHAR(50)   NULL,       -- Hoàn thành/Xuất sắc/Không đạt
+    VaiTro  NVARCHAR(50)   NULL,       -- Thanh vien/BTC/Dien gia/...
+    KetQua  NVARCHAR(50)   NULL,       -- Hoan thanh/Xuat sac/Khong dat
     CONSTRAINT PK_ThamGiaHD PRIMARY KEY (MaSV, MaHD),
     CONSTRAINT FK_TGHD_SV FOREIGN KEY (MaSV)
         REFERENCES dbo.SinhVien(MaSV) ON DELETE CASCADE,
@@ -77,131 +77,130 @@ CREATE TABLE dbo.ThamGiaHD (
 GO
 
 /* ============================================
-   DỮ LIỆU MẪU CHO 15 SINH VIÊN
+   DU LIEU MAU CHO 15 SINH VIEN
    ============================================ */
 INSERT INTO dbo.SinhVien (MaSV, HoTen, Lop, Nganh, Khoa, NgaySinh, GioiTinh, DiaChi, SDT)
 VALUES
-('SV001', N'Nguyễn Văn A',  'CTK45A', N'Công nghệ thông tin', N'CNTT', '2004-01-15', N'Nam', N'Hà Nội', '0912345678'),
-('SV002', N'Trần Thị B',    'CTK45A', N'Công nghệ thông tin', N'CNTT', '2004-02-20', N'Nữ',  N'Hà Nội', '0912345679'),
-('SV003', N'Lê Văn C',      'CTK45B', N'Kỹ thuật dữ liệu',   N'CNTT', '2003-12-10', N'Nam', N'Hải Phòng', '0912345680'),
-('SV004', N'Phạm Thị D',    'CTK45B', N'Kỹ thuật dữ Liệu',   N'CNTT', '2004-03-05', N'Nữ',  N'Hải Phòng', '0912345681'),
-('SV005', N'Hoàng Văn E',   'CTK45C', N'An toàn thông tin',  N'CNTT', '2004-04-12', N'Nam', N'Hà Nam', '0912345682'),
-('SV006', N'Ngô Thị F',     'CTK45C', N'An toàn thông tin',  N'CNTT', '2004-05-22', N'Nữ',  N'Hà Nam', '0912345683'),
-('SV007', N'Đặng Văn G',    'CTK46A', N'An toàn thông tin',       N'CNTT', '2005-06-18', N'Nam', N'Ninh Bình', '0912345684'),
-('SV008', N'Vũ Thị H',      'CTK46A', N'An toàn thông tin',       N'CNTT', '2005-07-25', N'Nữ',  N'Ninh Bình', '0912345685'),
-('SV009', N'Bùi Văn I',     'CTK46B', N'Công nghệ thông tin',    N'CNTT', '2005-08-30', N'Nam', N'Thái Bình', '0912345686'),
-('SV010', N'Nguyễn Thị K',  'CTK46B', N'Công nghệ thông tin',    N'CNTT', '2005-09-12', N'Nữ',  N'Thái Bình', '0912345687'),
-('SV011', N'Lương Văn L',   'CTK47A', N'Công nghệ thông tin', N'CNTT', '2006-01-10', N'Nam', N'Hà Tĩnh', '0912345688'),
-('SV012', N'Phan Thị M',    'CTK47A', N'Công nghệ thông tin', N'CNTT', '2006-02-11', N'Nữ',  N'Hà Tĩnh', '0912345689'),
-('SV013', N'Tạ Văn N',      'CTK47B', N'Kỹ thuật dữ Liệu',   N'CNTT', '2006-03-14', N'Nam', N'Nam Định', '0912345690'),
-('SV014', N'Đỗ Thị O',      'CTK47B', N'Kỹ thuật dữ Liệu',   N'CNTT', '2006-04-17', N'Nữ',  N'Nam Định', '0912345691'),
-('SV015', N'Hà Văn P',      'CTK47C', N'Kỹ thuật dữ Liệu',  N'CNTT', '2006-05-20', N'Nam', N'Thanh Hóa', '0912345692');
+('SV001', N'Nguyen Van A',  'CTK45A', N'Cong nghe thong tin', N'CNTT', '2004-01-15', N'Nam', N'Ha Noi', '0912345678'),
+('SV002', N'Tran Thi B',    'CTK45A', N'Cong nghe thong tin', N'CNTT', '2004-02-20', N'Nu',  N'Ha Noi', '0912345679'),
+('SV003', N'Le Van C',      'CTK45B', N'Ky thuat du lieu',    N'CNTT', '2003-12-10', N'Nam', N'Hai Phong', '0912345680'),
+('SV004', N'Pham Thi D',    'CTK45B', N'Ky thuat du lieu',    N'CNTT', '2004-03-05', N'Nu',  N'Hai Phong', '0912345681'),
+('SV005', N'Hoang Van E',   'CTK45C', N'An toan thong tin',   N'CNTT', '2004-04-12', N'Nam', N'Ha Nam', '0912345682'),
+('SV006', N'Ngo Thi F',     'CTK45C', N'An toan thong tin',   N'CNTT', '2004-05-22', N'Nu',  N'Ha Nam', '0912345683'),
+('SV007', N'Dang Van G',    'CTK46A', N'An toan thong tin',   N'CNTT', '2005-06-18', N'Nam', N'Ninh Binh', '0912345684'),
+('SV008', N'Vu Thi H',      'CTK46A', N'An toan thong tin',   N'CNTT', '2005-07-25', N'Nu',  N'Ninh Binh', '0912345685'),
+('SV009', N'Bui Van I',     'CTK46B', N'Cong nghe thong tin', N'CNTT', '2005-08-30', N'Nam', N'Thai Binh', '0912345686'),
+('SV010', N'Nguyen Thi K',  'CTK46B', N'Cong nghe thong tin', N'CNTT', '2005-09-12', N'Nu',  N'Thai Binh', '0912345687'),
+('SV011', N'Luong Van L',   'CTK47A', N'Cong nghe thong tin', N'CNTT', '2006-01-10', N'Nam', N'Ha Tinh', '0912345688'),
+('SV012', N'Phan Thi M',    'CTK47A', N'Cong nghe thong tin', N'CNTT', '2006-02-11', N'Nu',  N'Ha Tinh', '0912345689'),
+('SV013', N'Ta Van N',      'CTK47B', N'Ky thuat du lieu',    N'CNTT', '2006-03-14', N'Nam', N'Nam Dinh', '0912345690'),
+('SV014', N'Do Thi O',      'CTK47B', N'Ky thuat du lieu',    N'CNTT', '2006-04-17', N'Nu',  N'Nam Dinh', '0912345691'),
+('SV015', N'Ha Van P',      'CTK47C', N'Ky thuat du lieu',    N'CNTT', '2006-05-20', N'Nam', N'Thanh Hoa', '0912345692');
 GO
 
 /* ============================================
-   DỮ LIỆU MẪU CHO 15 ĐOÀN VIÊN (có 'Đoàn viên')
+   DU LIEU MAU CHO 15 DOAN VIEN (co 'Doan vien')
    ============================================ */
 INSERT INTO dbo.DoanVien (MaSV, NgayVaoDoan, ChucVu, TrangThai, DoanPhi, NgayDong) VALUES
-('SV001', '2021-03-26', N'Bí thư',      N'Đang sinh hoạt', N'Đã đóng',  '2025-03-15'),
-('SV002', '2021-04-10', N'Phó bí thư',  N'Đang sinh hoạt', N'Đã đóng',  '2025-03-16'),
-('SV003', '2020-10-20', N'Đoàn viên',   N'Đang sinh hoạt', N'Chưa đóng', NULL),
-('SV004', '2021-02-05', N'Đoàn viên',   N'Đang sinh hoạt', N'Đã đóng',  '2025-03-20'),
-('SV005', '2020-11-12', N'Đoàn viên',   N'Tạm ngưng',      N'Nợ phí',    NULL),
-('SV006', '2021-05-09', N'Đoàn viên',   N'Đang sinh hoạt', N'Đã đóng',  '2025-03-22'),
-('SV007', '2022-01-15', N'Đoàn viên',   N'Đang sinh hoạt', N'Chưa đóng', NULL),
-('SV008', '2022-02-18', N'Đoàn viên',   N'Đang sinh hoạt', N'Đã đóng',  '2025-03-25'),
-('SV009', '2022-09-01', N'Phó bí thư',  N'Đang sinh hoạt', N'Đã đóng',  '2025-04-02'),
-('SV010', '2022-09-01', N'Đoàn viên',   N'Đang sinh hoạt', N'Chưa đóng', NULL),
-('SV011', '2023-10-05', N'Đoàn viên',   N'Đang sinh hoạt', N'Đã đóng',  '2025-04-05'),
-('SV012', '2023-10-05', N'Đoàn viên',   N'Đang sinh hoạt', N'Đã đóng',  '2025-04-08'),
-('SV013', '2023-11-12', N'Đoàn viên',   N'Đang sinh hoạt', N'Nợ phí',    NULL),
-('SV014', '2023-11-20', N'Đoàn viên',   N'Tạm ngưng',      N'Chưa đóng', NULL),
-('SV015', '2024-01-10', N'Bí thư',      N'Đang sinh hoạt', N'Đã đóng',  '2025-04-12');
+('SV001', '2021-03-26', N'Bi thu',      N'Dang sinh hoat', N'Da dong',  '2025-03-15'),
+('SV002', '2021-04-10', N'Pho bi thu',  N'Dang sinh hoat', N'Da dong',  '2025-03-16'),
+('SV003', '2020-10-20', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
+('SV004', '2021-02-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-20'),
+('SV005', '2020-11-12', N'Doan vien',   N'Tam ngung',      N'No phi',    NULL),
+('SV006', '2021-05-09', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-22'),
+('SV007', '2022-01-15', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
+('SV008', '2022-02-18', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-25'),
+('SV009', '2022-09-01', N'Pho bi thu',  N'Dang sinh hoat', N'Da dong',  '2025-04-02'),
+('SV010', '2022-09-01', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
+('SV011', '2023-10-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-04-05'),
+('SV012', '2023-10-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-04-08'),
+('SV013', '2023-11-12', N'Doan vien',   N'Dang sinh hoat', N'No phi',    NULL),
+('SV014', '2023-11-20', N'Doan vien',   N'Tam ngung',      N'Chua dong', NULL),
+('SV015', '2024-01-10', N'Bi thu',      N'Dang sinh hoat', N'Da dong',  '2025-04-12');
 GO
 
 /* ============================================
-   DỮ LIỆU MẪU HOẠT ĐỘNG ĐOÀN
+   DU LIEU MAU HOAT DONG DOAN
    ============================================ */
-
 INSERT INTO dbo.HoatDongDoan (MaHD, TenHD, NgayToChuc, DiaDiem, NoiDung) VALUES
--- Các hoạt động đã diễn ra
-('HD001', N'Thi tìm hiểu 26/3',     '2025-03-20', N'Hội trường A', N'Tổ chức thi tìm hiểu truyền thống Đoàn TNCS Hồ Chí Minh'),
-('HD002', N'Hiến máu nhân đạo',    '2025-04-05', N'Nhà văn hóa tỉnh', N'Chương trình hiến máu tình nguyện vì cộng đồng'),
-('HD003', N'Dọn vệ sinh ký túc xá','2025-04-15', N'Ký túc xá Khoa CNTT', N'Hoạt động tình nguyện vệ sinh môi trường'),
-('HD004', N'Ngày hội thể thao',    '2025-05-01', N'Sân vận động trường', N'Thi đấu bóng đá, bóng chuyền, kéo co'),
-('HD005', N'Hội trại 26/3',        '2025-05-10', N'Sân trường chính', N'Hội trại kỷ niệm ngày thành lập Đoàn'),
+-- Cac hoat dong da dien ra
+('HD001', N'Thi tim hieu 26/3',     '2025-03-20', N'Hoi truong A', N'To chuc thi tim hieu truyen thong Doan TNCS Ho Chi Minh'),
+('HD002', N'Hien mau nhan dao',     '2025-04-05', N'Nha van hoa tinh', N'Chuong trinh hien mau tinh nguyen vi cong dong'),
+('HD003', N'Don ve sinh ky tuc xa','2025-04-15', N'Ky tuc xa Khoa CNTT', N'Hoat dong tinh nguyen ve sinh moi truong'),
+('HD004', N'Ngay hoi the thao',     '2025-05-01', N'San van dong truong', N'Thi dau bong da, bong chuyen, keo co'),
+('HD005', N'Hoi trai 26/3',         '2025-05-10', N'San truong chinh', N'Hoi trai ky niem ngay thanh lap Doan'),
 
--- Các hoạt động chưa diễn ra
-('HD006', N'Giao lưu doanh nghiệp CNTT', '2025-10-01', N'Hội trường B', N'Trao đổi kinh nghiệm, định hướng nghề nghiệp với doanh nghiệp CNTT'),
-('HD007', N'Thi Olympic Tin học',        '2025-11-15', N'Phòng máy 305', N'Thi Olympic Tin học cho sinh viên toàn khoa'),
-('HD008', N'Tình nguyện mùa đông',       '2025-12-20', N'Xã miền núi A', N'Chương trình tình nguyện hỗ trợ học sinh vùng cao'),
-('HD009', N'Ngày hội việc làm CNTT',     '2026-01-05', N'Sân trường', N'Kết nối sinh viên với các doanh nghiệp CNTT'),
-('HD010', N'Hội nghị Nghiên cứu khoa học sinh viên', '2026-03-15', N'Hội trường lớn', N'Báo cáo, trao đổi đề tài nghiên cứu khoa học');
+-- Cac hoat dong chua dien ra
+('HD006', N'Giao luu doanh nghiep CNTT', '2025-10-01', N'Hoi truong B', N'Trao doi kinh nghiem, dinh huong nghe nghiep voi doanh nghiep CNTT'),
+('HD007', N'Thi Olympic Tin hoc',        '2025-11-15', N'Phong may 305', N'Thi Olympic Tin hoc cho sinh vien toan khoa'),
+('HD008', N'Tinh nguyen mua dong',       '2025-12-20', N'Xa mien nui A', N'Chuong trinh tinh nguyen ho tro hoc sinh vung cao'),
+('HD009', N'Ngay hoi viec lam CNTT',     '2026-01-05', N'San truong', N'Ket noi sinh vien voi cac doanh nghiep CNTT'),
+('HD010', N'Hoi nghi Nghien cuu khoa hoc sinh vien', '2026-03-15', N'Hoi truong lon', N'Bao cao, trao doi de tai nghien cuu khoa hoc');
 GO
 
 /* ============================================
-   DỮ LIỆU MẪU THAM GIA HOẠT ĐỘNG
+   DU LIEU MAU THAM GIA HOAT DONG
    ============================================ */
--- HD001: Thi tìm hiểu 26/3
+-- HD001: Thi tim hieu 26/3
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV001', 'HD001', N'BTC',         N'Hoàn thành'),
-('SV002', 'HD001', N'Thành viên',  N'Xuất sắc'),
-('SV003', 'HD001', N'Thành viên',  N'Hoàn thành'),
-('SV004', 'HD001', N'Thành viên',  N'Không đạt');
+('SV001', 'HD001', N'BTC',         N'Hoan thanh'),
+('SV002', 'HD001', N'Thanh vien',  N'Xuat sac'),
+('SV003', 'HD001', N'Thanh vien',  N'Hoan thanh'),
+('SV004', 'HD001', N'Thanh vien',  N'Khong dat');
 
--- HD002: Hiến máu nhân đạo
+-- HD002: Hien mau nhan dao
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV005', 'HD002', N'Thành viên',  N'Hoàn thành'),
-('SV006', 'HD002', N'Thành viên',  N'Hoàn thành'),
-('SV007', 'HD002', N'BTC',         N'Hoàn thành'),
-('SV008', 'HD002', N'Thành viên',  N'Hoàn thành');
+('SV005', 'HD002', N'Thanh vien',  N'Hoan thanh'),
+('SV006', 'HD002', N'Thanh vien',  N'Hoan thanh'),
+('SV007', 'HD002', N'BTC',         N'Hoan thanh'),
+('SV008', 'HD002', N'Thanh vien',  N'Hoan thanh');
 
--- HD003: Dọn vệ sinh ký túc xá
+-- HD003: Don ve sinh ky tuc xa
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV009', 'HD003', N'Thành viên',  N'Xuất sắc'),
-('SV010', 'HD003', N'Thành viên',  N'Hoàn thành'),
-('SV011', 'HD003', N'BTC',         N'Hoàn thành');
+('SV009', 'HD003', N'Thanh vien',  N'Xuat sac'),
+('SV010', 'HD003', N'Thanh vien',  N'Hoan thanh'),
+('SV011', 'HD003', N'BTC',         N'Hoan thanh');
 
--- HD004: Ngày hội thể thao
+-- HD004: Ngay hoi the thao
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV012', 'HD004', N'Vận động viên', N'Xuất sắc'),
-('SV013', 'HD004', N'Vận động viên', N'Hoàn thành'),
-('SV014', 'HD004', N'Cổ động viên',  N'Hoàn thành');
+('SV012', 'HD004', N'Van dong vien', N'Xuat sac'),
+('SV013', 'HD004', N'Van dong vien', N'Hoan thanh'),
+('SV014', 'HD004', N'Co dong vien',  N'Hoan thanh');
 
--- HD005: Hội trại 26/3
+-- HD005: Hoi trai 26/3
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV015', 'HD005', N'BTC',         N'Hoàn thành'),
-('SV001', 'HD005', N'Thành viên',  N'Xuất sắc'),
-('SV002', 'HD005', N'Thành viên',  N'Hoàn thành'),
-('SV003', 'HD005', N'Thành viên',  N'Hoàn thành');
+('SV015', 'HD005', N'BTC',         N'Hoan thanh'),
+('SV001', 'HD005', N'Thanh vien',  N'Xuat sac'),
+('SV002', 'HD005', N'Thanh vien',  N'Hoan thanh'),
+('SV003', 'HD005', N'Thanh vien',  N'Hoan thanh');
 
--- HD006: Giao lưu doanh nghiệp CNTT (chưa diễn ra)
+-- HD006: Giao luu doanh nghiep CNTT (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV004', 'HD006', N'Thành viên', NULL),
-('SV007', 'HD006', N'Thành viên', NULL),
+('SV004', 'HD006', N'Thanh vien', NULL),
+('SV007', 'HD006', N'Thanh vien', NULL),
 ('SV010', 'HD006', N'BTC', NULL);
 
--- HD007: Thi Olympic Tin học (chưa diễn ra)
+-- HD007: Thi Olympic Tin hoc (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV002', 'HD007', N'Thành viên', NULL),
-('SV005', 'HD007', N'Thành viên', NULL),
+('SV002', 'HD007', N'Thanh vien', NULL),
+('SV005', 'HD007', N'Thanh vien', NULL),
 ('SV009', 'HD007', N'BTC', NULL);
 
--- HD008: Tình nguyện mùa đông (chưa diễn ra)
+-- HD008: Tinh nguyen mua dong (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV006', 'HD008', N'Thành viên', NULL),
-('SV012', 'HD008', N'Thành viên', NULL),
+('SV006', 'HD008', N'Thanh vien', NULL),
+('SV012', 'HD008', N'Thanh vien', NULL),
 ('SV015', 'HD008', N'BTC', NULL);
 
--- HD009: Ngày hội việc làm CNTT (chưa diễn ra)
+-- HD009: Ngay hoi viec lam CNTT (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV001', 'HD009', N'Thành viên', NULL),
-('SV008', 'HD009', N'Thành viên', NULL),
-('SV013', 'HD009', N'Cộng tác viên', NULL);
+('SV001', 'HD009', N'Thanh vien', NULL),
+('SV008', 'HD009', N'Thanh vien', NULL),
+('SV013', 'HD009', N'Cong tac vien', NULL);
 
--- HD010: Hội nghị NCKH sinh viên (chưa diễn ra)
+-- HD010: Hoi nghi NCKH sinh vien (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV003', 'HD010', N'Báo cáo viên', NULL),
-('SV011', 'HD010', N'Thành viên', NULL),
-('SV014', 'HD010', N'Thành viên', NULL);
+('SV003', 'HD010', N'Bao cao vien', NULL),
+('SV011', 'HD010', N'Thanh vien', NULL),
+('SV014', 'HD010', N'Thanh vien', NULL);
 GO
