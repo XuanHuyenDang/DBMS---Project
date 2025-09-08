@@ -9,11 +9,11 @@ GO
 CREATE TABLE dbo.SinhVien (
     MaSV      VARCHAR(10)    NOT NULL,
     HoTen     NVARCHAR(100)  NOT NULL,
+	NgaySinh  DATE           NULL,
+    GioiTinh  NVARCHAR(5)    NULL,  -- Nam/Nu
     Lop       VARCHAR(10)    NULL,
     Nganh     NVARCHAR(50)   NULL,
     Khoa      NVARCHAR(50)   NULL,
-    NgaySinh  DATE           NULL,
-    GioiTinh  NVARCHAR(5)    NULL,  -- Nam/Nu
     DiaChi    NVARCHAR(200)  NULL,
     SDT       VARCHAR(15)    NULL,
     CONSTRAINT PK_SinhVien PRIMARY KEY (MaSV),
@@ -79,44 +79,51 @@ GO
 /* ============================================
    DU LIEU MAU CHO 15 SINH VIEN
    ============================================ */
-INSERT INTO dbo.SinhVien (MaSV, HoTen, Lop, Nganh, Khoa, NgaySinh, GioiTinh, DiaChi, SDT)
+INSERT INTO dbo.SinhVien (MaSV, HoTen, NgaySinh, GioiTinh, Lop, Nganh, Khoa, DiaChi, SDT)
 VALUES
-('SV001', N'Nguyen Van A',  'CTK45A', N'Cong nghe thong tin', N'CNTT', '2004-01-15', N'Nam', N'Ha Noi', '0912345678'),
-('SV002', N'Tran Thi B',    'CTK45A', N'Cong nghe thong tin', N'CNTT', '2004-02-20', N'Nu',  N'Ha Noi', '0912345679'),
-('SV003', N'Le Van C',      'CTK45B', N'Ky thuat du lieu',    N'CNTT', '2003-12-10', N'Nam', N'Hai Phong', '0912345680'),
-('SV004', N'Pham Thi D',    'CTK45B', N'Ky thuat du lieu',    N'CNTT', '2004-03-05', N'Nu',  N'Hai Phong', '0912345681'),
-('SV005', N'Hoang Van E',   'CTK45C', N'An toan thong tin',   N'CNTT', '2004-04-12', N'Nam', N'Ha Nam', '0912345682'),
-('SV006', N'Ngo Thi F',     'CTK45C', N'An toan thong tin',   N'CNTT', '2004-05-22', N'Nu',  N'Ha Nam', '0912345683'),
-('SV007', N'Dang Van G',    'CTK46A', N'An toan thong tin',   N'CNTT', '2005-06-18', N'Nam', N'Ninh Binh', '0912345684'),
-('SV008', N'Vu Thi H',      'CTK46A', N'An toan thong tin',   N'CNTT', '2005-07-25', N'Nu',  N'Ninh Binh', '0912345685'),
-('SV009', N'Bui Van I',     'CTK46B', N'Cong nghe thong tin', N'CNTT', '2005-08-30', N'Nam', N'Thai Binh', '0912345686'),
-('SV010', N'Nguyen Thi K',  'CTK46B', N'Cong nghe thong tin', N'CNTT', '2005-09-12', N'Nu',  N'Thai Binh', '0912345687'),
-('SV011', N'Luong Van L',   'CTK47A', N'Cong nghe thong tin', N'CNTT', '2006-01-10', N'Nam', N'Ha Tinh', '0912345688'),
-('SV012', N'Phan Thi M',    'CTK47A', N'Cong nghe thong tin', N'CNTT', '2006-02-11', N'Nu',  N'Ha Tinh', '0912345689'),
-('SV013', N'Ta Van N',      'CTK47B', N'Ky thuat du lieu',    N'CNTT', '2006-03-14', N'Nam', N'Nam Dinh', '0912345690'),
-('SV014', N'Do Thi O',      'CTK47B', N'Ky thuat du lieu',    N'CNTT', '2006-04-17', N'Nu',  N'Nam Dinh', '0912345691'),
-('SV015', N'Ha Van P',      'CTK47C', N'Ky thuat du lieu',    N'CNTT', '2006-05-20', N'Nam', N'Thanh Hoa', '0912345692');
+('23110001', N'Nguyen Van A',  '2004-01-15', N'Nam', 'CTK45A', N'Cong nghe thong tin', N'CNTT', N'Ha Noi',     '0912345678'),
+('23110002', N'Tran Thi B',    '2004-02-20', N'Nu',  'CTK45A', N'Cong nghe thong tin', N'CNTT', N'Ha Noi',     '0912345679'),
+
+('23133001', N'Le Van C',      '2003-12-10', N'Nam', 'CTK45B', N'Ky thuat du lieu',    N'CNTT', N'Hai Phong',  '0912345680'),
+('23133002', N'Pham Thi D',    '2004-03-05', N'Nu',  'CTK45B', N'Ky thuat du lieu',    N'CNTT', N'Hai Phong',  '0912345681'),
+
+('23162001', N'Hoang Van E',   '2004-04-12', N'Nam', 'CTK45C', N'An toan thong tin',   N'CNTT', N'Ha Nam',     '0912345682'),
+('23162002', N'Ngo Thi F',     '2004-05-22', N'Nu',  'CTK45C', N'An toan thong tin',   N'CNTT', N'Ha Nam',     '0912345683'),
+
+('24162001', N'Dang Van G',    '2005-06-18', N'Nam', 'CTK46A', N'An toan thong tin',   N'CNTT', N'Ninh Binh',  '0912345684'),
+('24162002', N'Vu Thi H',      '2005-07-25', N'Nu',  'CTK46A', N'An toan thong tin',   N'CNTT', N'Ninh Binh',  '0912345685'),
+
+('24110001', N'Bui Van I',     '2005-08-30', N'Nam', 'CTK46B', N'Cong nghe thong tin', N'CNTT', N'Thai Binh',  '0912345686'),
+('24110002', N'Nguyen Thi K',  '2005-09-12', N'Nu',  'CTK46B', N'Cong nghe thong tin', N'CNTT', N'Thai Binh',  '0912345687'),
+
+('25110001', N'Luong Van L',   '2006-01-10', N'Nam', 'CTK47A', N'Cong nghe thong tin', N'CNTT', N'Ha Tinh',    '0912345688'),
+('25110002', N'Phan Thi M',    '2006-02-11', N'Nu',  'CTK47A', N'Cong nghe thong tin', N'CNTT', N'Ha Tinh',    '0912345689'),
+
+('25133001', N'Ta Van N',      '2006-03-14', N'Nam', 'CTK47B', N'Ky thuat du lieu',    N'CNTT', N'Nam Dinh',   '0912345690'),
+('25133002', N'Do Thi O',      '2006-04-17', N'Nu',  'CTK47B', N'Ky thuat du lieu',    N'CNTT', N'Nam Dinh',   '0912345691'),
+('25133003', N'Ha Van P',      '2006-05-20', N'Nam', 'CTK47C', N'Ky thuat du lieu',    N'CNTT', N'Thanh Hoa',  '0912345692');
 GO
+
 
 /* ============================================
    DU LIEU MAU CHO 15 DOAN VIEN (co 'Doan vien')
    ============================================ */
 INSERT INTO dbo.DoanVien (MaSV, NgayVaoDoan, ChucVu, TrangThai, DoanPhi, NgayDong) VALUES
-('SV001', '2021-03-26', N'Bi thu',      N'Dang sinh hoat', N'Da dong',  '2025-03-15'),
-('SV002', '2021-04-10', N'Pho bi thu',  N'Dang sinh hoat', N'Da dong',  '2025-03-16'),
-('SV003', '2020-10-20', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
-('SV004', '2021-02-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-20'),
-('SV005', '2020-11-12', N'Doan vien',   N'Tam ngung',      N'No phi',    NULL),
-('SV006', '2021-05-09', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-22'),
-('SV007', '2022-01-15', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
-('SV008', '2022-02-18', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-25'),
-('SV009', '2022-09-01', N'Pho bi thu',  N'Dang sinh hoat', N'Da dong',  '2025-04-02'),
-('SV010', '2022-09-01', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
-('SV011', '2023-10-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-04-05'),
-('SV012', '2023-10-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-04-08'),
-('SV013', '2023-11-12', N'Doan vien',   N'Dang sinh hoat', N'No phi',    NULL),
-('SV014', '2023-11-20', N'Doan vien',   N'Tam ngung',      N'Chua dong', NULL),
-('SV015', '2024-01-10', N'Bi thu',      N'Dang sinh hoat', N'Da dong',  '2025-04-12');
+('23110001', '2021-03-26', N'Bi thu',      N'Dang sinh hoat', N'Da dong',  '2025-03-15'),
+('23110002', '2021-04-10', N'Pho bi thu',  N'Dang sinh hoat', N'Da dong',  '2025-03-16'),
+('23133001', '2020-10-20', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
+('23133002', '2021-02-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-20'),
+('23162001', '2020-11-12', N'Doan vien',   N'Tam ngung',      N'No phi',    NULL),
+('23162002', '2021-05-09', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-22'),
+('24162001', '2022-01-15', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
+('24162002', '2022-02-18', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-03-25'),
+('24110001', '2022-09-01', N'Pho bi thu',  N'Dang sinh hoat', N'Da dong',  '2025-04-02'),
+('24110002', '2022-09-01', N'Doan vien',   N'Dang sinh hoat', N'Chua dong', NULL),
+('25110001', '2023-10-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-04-05'),
+('25110002', '2023-10-05', N'Doan vien',   N'Dang sinh hoat', N'Da dong',  '2025-04-08'),
+('25133001', '2023-11-12', N'Doan vien',   N'Dang sinh hoat', N'No phi',    NULL),
+('25133002', '2023-11-20', N'Doan vien',   N'Tam ngung',      N'Chua dong', NULL),
+('25133003', '2024-01-10', N'Bi thu',      N'Dang sinh hoat', N'Da dong',  '2025-04-12');
 GO
 
 /* ============================================
@@ -141,66 +148,75 @@ GO
 /* ============================================
    DU LIEU MAU THAM GIA HOAT DONG
    ============================================ */
--- HD001: Thi tim hieu 26/3
+-- HD001
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV001', 'HD001', N'BTC',         N'Hoan thanh'),
-('SV002', 'HD001', N'Thanh vien',  N'Xuat sac'),
-('SV003', 'HD001', N'Thanh vien',  N'Hoan thanh'),
-('SV004', 'HD001', N'Thanh vien',  N'Khong dat');
+('23110001', 'HD001', N'BTC',         N'Hoan thanh'),
+('23110002', 'HD001', N'Thanh vien',  N'Xuat sac'),
+('23133001', 'HD001', N'Thanh vien',  N'Hoan thanh'),
+('23133002', 'HD001', N'Thanh vien',  N'Khong dat');
+GO
 
--- HD002: Hien mau nhan dao
+-- HD002
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV005', 'HD002', N'Thanh vien',  N'Hoan thanh'),
-('SV006', 'HD002', N'Thanh vien',  N'Hoan thanh'),
-('SV007', 'HD002', N'BTC',         N'Hoan thanh'),
-('SV008', 'HD002', N'Thanh vien',  N'Hoan thanh');
+('23162001', 'HD002', N'Thanh vien',  N'Hoan thanh'),
+('23162002', 'HD002', N'Thanh vien',  N'Hoan thanh'),
+('24162001', 'HD002', N'BTC',         N'Hoan thanh'),
+('24162002', 'HD002', N'Thanh vien',  N'Hoan thanh');
+GO
 
--- HD003: Don ve sinh ky tuc xa
+-- HD003
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV009', 'HD003', N'Thanh vien',  N'Xuat sac'),
-('SV010', 'HD003', N'Thanh vien',  N'Hoan thanh'),
-('SV011', 'HD003', N'BTC',         N'Hoan thanh');
+('24110001', 'HD003', N'Thanh vien',  N'Xuat sac'),
+('24110002', 'HD003', N'Thanh vien',  N'Hoan thanh'),
+('25110001', 'HD003', N'BTC',         N'Hoan thanh');
+GO
 
--- HD004: Ngay hoi the thao
+-- HD004
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV012', 'HD004', N'Van dong vien', N'Xuat sac'),
-('SV013', 'HD004', N'Van dong vien', N'Hoan thanh'),
-('SV014', 'HD004', N'Co dong vien',  N'Hoan thanh');
+('25110002', 'HD004', N'Van dong vien', N'Xuat sac'),
+('25133001', 'HD004', N'Van dong vien', N'Hoan thanh'),
+('25133002', 'HD004', N'Co dong vien',  N'Hoan thanh');
+GO
 
--- HD005: Hoi trai 26/3
+-- HD005
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV015', 'HD005', N'BTC',         N'Hoan thanh'),
-('SV001', 'HD005', N'Thanh vien',  N'Xuat sac'),
-('SV002', 'HD005', N'Thanh vien',  N'Hoan thanh'),
-('SV003', 'HD005', N'Thanh vien',  N'Hoan thanh');
+('25133003', 'HD005', N'BTC',         N'Hoan thanh'),
+('23110001', 'HD005', N'Thanh vien',  N'Xuat sac'),
+('23110002', 'HD005', N'Thanh vien',  N'Hoan thanh'),
+('23133001', 'HD005', N'Thanh vien',  N'Hoan thanh');
+GO
 
--- HD006: Giao luu doanh nghiep CNTT (chua dien ra)
+-- HD006 (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV004', 'HD006', N'Thanh vien', NULL),
-('SV007', 'HD006', N'Thanh vien', NULL),
-('SV010', 'HD006', N'BTC', NULL);
+('23133002', 'HD006', N'Thanh vien', NULL),
+('24162001', 'HD006', N'Thanh vien', NULL),
+('24110002', 'HD006', N'BTC', NULL);
+GO
 
--- HD007: Thi Olympic Tin hoc (chua dien ra)
+-- HD007 (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV002', 'HD007', N'Thanh vien', NULL),
-('SV005', 'HD007', N'Thanh vien', NULL),
-('SV009', 'HD007', N'BTC', NULL);
+('23110002', 'HD007', N'Thanh vien', NULL),
+('23162001', 'HD007', N'Thanh vien', NULL),
+('24110001', 'HD007', N'BTC', NULL);
+GO
 
--- HD008: Tinh nguyen mua dong (chua dien ra)
+-- HD008 (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV006', 'HD008', N'Thanh vien', NULL),
-('SV012', 'HD008', N'Thanh vien', NULL),
-('SV015', 'HD008', N'BTC', NULL);
+('23162002', 'HD008', N'Thanh vien', NULL),
+('25110002', 'HD008', N'Thanh vien', NULL),
+('25133003', 'HD008', N'BTC', NULL);
+GO
 
--- HD009: Ngay hoi viec lam CNTT (chua dien ra)
+-- HD009 (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV001', 'HD009', N'Thanh vien', NULL),
-('SV008', 'HD009', N'Thanh vien', NULL),
-('SV013', 'HD009', N'Cong tac vien', NULL);
+('23110001', 'HD009', N'Thanh vien', NULL),
+('24162002', 'HD009', N'Thanh vien', NULL),
+('25133001', 'HD009', N'Cong tac vien', NULL);
+GO
 
--- HD010: Hoi nghi NCKH sinh vien (chua dien ra)
+-- HD010 (chua dien ra)
 INSERT INTO dbo.ThamGiaHD (MaSV, MaHD, VaiTro, KetQua) VALUES
-('SV003', 'HD010', N'Bao cao vien', NULL),
-('SV011', 'HD010', N'Thanh vien', NULL),
-('SV014', 'HD010', N'Thanh vien', NULL);
+('23133001', 'HD010', N'Bao cao vien', NULL),
+('25110001', 'HD010', N'Thanh vien', NULL),
+('25133002', 'HD010', N'Thanh vien', NULL);
 GO
